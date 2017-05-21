@@ -1,5 +1,2 @@
 # Panacea
-Web App for eHealth protocols as a clinical decision support system (CDSS),  
-developed with estandard ASTM E2210-06 (GEM-III), 
-and the Implementation of Semantic Web Technologies and AJAX, to create Application Programming Interfaces (APIs) 
-for interoperability with opensource iniciatives like OpenEHR and HL7.
+Tetraktys is an open source initiative developed with Semantic Web technologies  implementing standards as ASTM E2210-06 (GEM-III), Snomed CT,  OpenEHR and HL7 to create web Apps of protocols for clinical decision support systems (CDSS), and to form working groups that develop recommendations, guides, application programming interfaces (API), and frameworks for interoperability.

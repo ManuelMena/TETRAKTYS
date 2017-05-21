@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<guideline.document>
+	<guideline.header>
+		<identity source="nd">
+			<guideline.title source="nd"/>
+			<citation source="nd">
+				<guideline.length source="nd"/>
+			</citation>
+			<release.date source="nd"/>
+			<availability source="nd">
+				<electronic source="nd"/>
+				<print source="nd"/>
+				<contact source="nd"/>
+			</availability>
+			<status source="nd"/>
+			<companion.document source="nd">
+				<patient.resource source="nd"/>
+			</companion.document>
+			<adaptation source="nd"/>
+		</identity>
+		<developer source="nd">
+			<developer.name source="nd">
+				<developer.type/>
+			</developer.name>
+			<committee.name source="nd">
+				<committee.expertise source="nd"/>
+				<committee.member source="nd">
+					<member.expertise source="nd"/>
+				</committee.member>
+			</committee.name>
+			<funding source="nd"/>
+			<endorser source="nd"/>
+			<comparable.guideline source="nd"/>
+		</developer>
+	</guideline.header>
+	<guideline.body>
+		<purpose source="nd">
+			<main.focus source="nd"/>
+			<category/>
+			<rationale source="nd"/>
+			<objective source="nd"/>
+			<available.option source="nd"/>
+			<implementation.strategy source="nd"/>
+			<health.outcome source="nd"/>
+			<exception source="nd"/>
+		</purpose>
+		<intended.audience source="nd">
+			<users source="nd">
+				<clinical.specialty/>
+				<professional.group/>
+			</users>
+			<care.setting source="nd"/>
+		</intended.audience>
+		<development.method source="nd">
+			<description.evidence.collection source="nd">
+				<method.evidence.collection/>
+				<number.source.documents source="nd"/>
+			</description.evidence.collection>
+			<evidence.time.period source="nd"/>
+			<method.evidence.grading>
+				<rating.scheme source="nd"/>
+			</method.evidence.grading>
+			<description.evidence.combination source="nd">
+				<method.evidence.combination/>
+			</description.evidence.combination>
+			<cost.analysis source="nd"/>
+			<specification.harm.benefit source="nd"/>
+			<quantification.harm.benefit source="nd"/>
+			<role.value.judgment source="nd"/>
+			<role.patient.preference source="nd"/>
+			<qualifying.statement source="nd"/>
+		</development.method>
+		<target.population source="nd">
+			<eligibility source="nd">
+				<inclusion.criterion source="nd"/>
+				<exclusion.criterion source="nd"/>
+			</eligibility>
+			<age/>
+			<sex/>
+		</target.population>
+		<knowledge.components source="nd">
+			<recommendation source="nd">
+				<conditional source="nd">
+					<decision.variable source="nd">
+						<value source="nd"/>
+						<decision.variable.description source="nd"/>
+						<test.parameter source="nd">
+							<sensitivity source="nd"/>
+							<specificity source="nd"/>
+							<predictive.value source="nd"/>
+						</test.parameter>
+						<decision.variable.cost source="nd"/>
+					</decision.variable>
+					<action source="nd">
+						<action.benefit source="nd"/>
+						<action.risk.harm source="nd"/>
+						<action.description source="nd"/>
+						<action.cost source="nd"/>
+					</action>
+					<reason source="nd"/>
+					<evidence.quality source="nd"/>
+					<recommendation.strength source="nd"/>
+					<flexibility source="nd"/>
+					<logic source="nd"/>
+					<cost source="nd"/>
+					<linkage source="nd"/>
+					<reference source="nd"/>
+					<certainty source="nd"/>
+				</conditional>
+				<imperative source="nd">
+					<directive source="nd">
+						<directive.benefit source="nd"/>
+						<directive.risk.harm source="nd"/>
+						<directive.description source="nd"/>
+						<directive.cost source="nd"/>
+					</directive>
+					<reason source="nd"/>
+					<evidence.quality source="nd"/>
+					<recommendation.strength source="nd"/>
+					<flexibility source="nd"/>
+					<logic source="nd"/>
+					<cost source="nd"/>
+					<linkage source="nd"/>
+					<reference source="nd"/>
+					<certainty source="nd"/>
+				</imperative>
+			</recommendation>
+			<definition source="nd">
+				<term source="nd">
+					<term.meaning source="nd"/>
+				</term>
+			</definition>
+			<algorithm source="nd">
+				<action.step source="nd"/>
+				<conditional.step source="nd"/>
+				<branch.step source="nd"/>
+				<synchronization.step source="nd"/>
+			</algorithm>
+		</knowledge.components>
+		<testing source="nd">
+			<external.review source="nd">
+				<review.method/>
+			</external.review>
+			<pilot.testing source="nd"/>
+		</testing>
+		<revision.plan source="nd">
+			<expiration source="nd"/>
+			<scheduled.review source="nd"/>
+		</revision.plan>
+	</guideline.body>
+</guideline.document>

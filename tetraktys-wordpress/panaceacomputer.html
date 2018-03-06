@@ -1,0 +1,88 @@
+
+<style type="text/css">
+	div.mdltxhml {
+		padding:  30px 30px 30px 30px;
+		margin: 10px 10px 10px 10px;
+	}
+	.pitagoras {
+		font-size: 12px;
+		padding: 26px;
+		max-height: 400px;
+		overflow: auto;
+	}
+	div.creativespace {
+		height: 80px;
+	}
+	code.color {
+		color: white;
+	}
+	.card {
+	  height: 700px;
+	  overflow: auto;
+	}
+	div.ejemplos {
+		text-align: left;
+	}
+	code {
+		
+	}
+	pre {
+		background-color: lightgray;
+	}
+</style>
+
+<hr>
+<h1><a id="Instalar_Google_Compute_EngineR_con_RstudiohttpsgithubcomManuelMenaPanaceatreemasterGoogleComputeEngineR_1"></a><a href="https://github.com/ManuelMena/Panacea/tree/master/GoogleComputeEngineR">Instalar Google Compute EngineR con Rstudio</a></h1>
+<hr>
+
+<div class="pitagoras col-lg-11">
+<pre><code>!!! Lista de Comandos con fallas. Por favor contribuir. 
+</code></pre>
+<h2><a id="Instalar_Liberias_y_opciones_6"></a>Instalar Liberias y opciones</h2>
+<pre><code class="language-R">R&gt; install.packages(<span class="hljs-string">"googleComputeEngineR"</span>)
+R&gt; install.packages(<span class="hljs-string">"googleAuthR"</span>)
+R&gt; options(<span class="hljs-string">"googleAuthR.client_id"</span> = <span class="hljs-string">"[.apps.googleusercontent.com]"</span>)
+R&gt; options(<span class="hljs-string">"googleAuthR.client_secret"</span> = <span class="hljs-string">"[https://developers.google.com/identity/protocols/OAuth2ServiceAccount]"</span>)
+R&gt; options(<span class="hljs-string">"googleAuthR.scopes.selected"</span> = <span class="hljs-string">"[https://cran.r-project.org/web/packages/googleAuthR/vignettes/google-authentication-types.html]"</span>)
+R&gt; options(<span class="hljs-string">"googleAuthR.scopes"</span> = <span class="hljs-string">"[https://cran.r-project.org/web/packages/googleAuthR/vignettes/google-authentication-types.html]"</span>)
+R&gt; <span class="hljs-keyword">library</span>(googleComputeEngineR)
+R&gt; <span class="hljs-keyword">library</span>(googleAuthR)
+</code></pre>
+<h2><a id="Crear_credenciales_17"></a>Crear credenciales</h2>
+<pre><code class="language-R">R&gt; <span class="hljs-keyword">library</span>(googlesheets)
+R&gt; <span class="hljs-keyword">library</span>(httr)
+R&gt; gar_create_api_skeleton(filename, api_json, format = <span class="hljs-literal">TRUE</span>)
+R&gt; gar_create_package(api_json, directory, rstudio = <span class="hljs-literal">TRUE</span>, check = <span class="hljs-literal">TRUE</span>, github = <span class="hljs-literal">TRUE</span>, format = <span class="hljs-literal">TRUE</span>, overwrite = <span class="hljs-literal">TRUE</span>)
+R&gt; file.remove(<span class="hljs-string">'.httr-oauth'</span>) 
+R&gt; oauth2.0_token(endpoint = oauth_endpoints(<span class="hljs-string">"google"</span>), app = oauth_app(<span class="hljs-string">"google"</span>), key = getOption(<span class="hljs-string">"googlesheets.client_id"</span>), 
+   secret = getOption(<span class="hljs-string">"googlesheets.client_secret"</span>)),
+R&gt; scope = c(<span class="hljs-string">"https://spreadsheets.google.com/feeds"</span>, <span class="hljs-string">"https://www.googleapis.com/auth/drive"</span>), use_oob = <span class="hljs-literal">TRUE</span>, cache = <span class="hljs-literal">TRUE</span>)
+R&gt; gs_ls() 
+
+R&gt; <span class="hljs-keyword">library</span>(googlesheets) 
+R&gt; options(httr_oob_default=<span class="hljs-literal">TRUE</span>) 
+R&gt; gs_ls()
+</code></pre>
+<h2><a id="Generar_API_33"></a>Generar API</h2>
+<pre><code class="language-R">R&gt; gar_api_generator()
+R&gt; gar_api_generator(baseURI, http_header = c(<span class="hljs-string">"GET"</span>, <span class="hljs-string">"POST"</span>, <span class="hljs-string">"PUT"</span>, <span class="hljs-string">"DELETE"</span>, <span class="hljs-string">"PATCH"</span>), path_args = <span class="hljs-literal">NULL</span>, pars_args = <span class="hljs-literal">NULL</span>, 
+   data_parse_function = <span class="hljs-literal">NULL</span>, customConfig = <span class="hljs-literal">NULL</span>, simplifyVector = getOption(<span class="hljs-string">"googleAuthR.jsonlite.simplifyVector"</span>), checkTrailingSlash = <span class="hljs-literal">TRUE</span>)
+</code></pre>
+<h2><a id="Setup_39"></a>Setup</h2>
+<pre><code class="language-R">R&gt; gar_api_generator()
+R&gt; gar_api_generator(baseURI, http_header = c(<span class="hljs-string">"GET"</span>, <span class="hljs-string">"POST"</span>, <span class="hljs-string">"PUT"</span>, <span class="hljs-string">"DELETE"</span>, <span class="hljs-string">"PATCH"</span>), path_args = <span class="hljs-literal">NULL</span>, pars_args = <span class="hljs-literal">NULL</span>, 
+   data_parse_function = <span class="hljs-literal">NULL</span>, customConfig = <span class="hljs-literal">NULL</span>, simplifyVector = getOption(<span class="hljs-string">"googleAuthR.jsonlite.simplifyVector"</span>), checkTrailingSlash = <span class="hljs-literal">TRUE</span>)
+R&gt; project &lt;- <span class="hljs-string">"[normbre del proyecto?]"</span>
+R&gt; zone &lt;- <span class="hljs-string">"[us-west1-b?]"</span>
+R&gt; account_key &lt;- <span class="hljs-string">"[.json?]"</span>
+R&gt; Sys.setenv(GCE_AUTH_FILE = account_key, GCE_DEFAULT_PROJECT_ID = [project?], GCE_DEFAULT_ZONE = [zone?])
+R&gt; gce_auth()
+</code></pre>
+<h2><a id="Establecer_proyecto_global_predeterminado_50"></a>Establecer proyecto global predeterminado</h2>
+<pre><code>gce_global_project([project?])
+gce_global_zone([zone?])
+default_project &lt;- gce_get_project([normbre del proyecto?])
+</code></pre>
+</div>
+
+<div class="creativespace col-lg-12"></div>

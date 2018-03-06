@@ -1,0 +1,125 @@
+
+<style type="text/css">
+	.pitagoras {
+		font-size: 12px;
+		padding: 26px;
+		max-height: 300px;
+		overflow: auto;
+	}
+
+	code.color {
+		color: white;
+	}
+	code {
+		background-color: black;
+		color: white;
+	}
+	pre {
+		background-color: black;
+		color: white;
+	}
+	p {
+		font-size: 20px;
+	}
+</style>
+
+[one-half-first]
+<h2><a id="sistema_estandarizado_de_nomenclatura_mdicahttpsihtsdogithubioimgsnomed2png_0"></a><img src="https://ihtsdo.github.io/img/snomed-2.png" alt="sistema estandarizado de nomenclatura médica"></h2>
+<h2><a id="Que_es_SnomedCT_y_como_puedo_crear_un_servidor_con_Google_Cloud_y_Tomcat_2"></a>Que es Snomed-CT®? y como puedo crear un servidor con Google Cloud y Tomcat®?</h2>
+<p><a href="https://www.snomed.org/snomed-ct" target="_blank">Snomed-CT</a> es la base de datos mas extensa de conceptos <strong>médicos</strong> con mas de 311.000 referencias y 1.6 millones de relaciones conceptuales; desarrollado por la liberia medica nacional de los Estados Unidos usando languaje de ontologias web-<a href="https://www.w3.org/OWL/" target="_blank">OWL</a>. OWL es un lenguaje de distribucion ontologica de datos que se compone de tecnologías como: lenguaje extensible de marcado-<a href="https://www.w3.org/XML/" target="_blank">XML</a>, marco de distribucción de recursos-<a href="https://www.w3.org/RDF/" target="_blank">RDF</a>, lenguaje de transformaciones XLS-<a href="https://www.w3.org/Style/XSL/" target="_blank">XSLT</a>, ademas de diversos estandares semánticos que desarrolla el <a href="https://www.w3.org/">consorcio de la web</a>; OWL es un lenguaje semántico diseñado para que las maquinas entienda los datos que se le ingresan. Este framework esta diseñado con el desafío de traer al español todas estas herramientas para registro de historia clínica y sistemas de soporte de decisiones. Escalando proyectos en la nube, tipo SaaS, PaaS e IaaS,  basados en el modelo de Kubernetes para el desarrollo de software de código abierto y de distribución libre, que integre todas las tecnologías radicales de la web 3.0 como <a href="https://www.w3.org/blog/2016/10/w3c-and-big-data/" target="_blank">BIG DATA</a>, <a href="https://www.w3.org/community/ml-schema/" target="_blank">ML</a>, <a href="https://ai.google/" target="_blank">IA</a>, <a href="https://www.w3.org/standards/webofdevices/" target="_blank">IoT</a>, web semántica y todos los <a href="https://www.w3.org/standards/" target="_blank">estandares</a> de los grupos de desarrollo de la web.</p>
+[/one-half-first]
+[one-half]
+<p><a href="http://edsnomedct.azurewebsites.net/" target="_blank">Ejemplo de una app para diagnóstico por Zonas</a><br>
+<img src="https://storage.googleapis.com/tetraktys/edsnomed.png" alt="edsnomedct"></p>
+<p>Esta es la secuencia de comando es para crear una API con JAVA que distribuye libremente <a href="http://www.westcoastinformatics.com/index.html" target="_blank"><strong>westcoastinformatics, LLC</strong></a>. sugerimos probar el esquema de desarrollo en Google Cloud y probar cada comando, necesitamos sugerencias o descubrir si esta bien hasta ahora. Gracias.</p>
+<p><a href="https://umls.terminology.tools/#/landing" target="_blank">Demo online del servidor</a><br>
+<img src="https://storage.googleapis.com/tetraktys/umlstools.png" alt="UMLS-tools"></p>
+[/one-half]
+
+<hr>
+<h1><a id="Crear_un_servidor_de_SnomedCT_con_Google_Cloud_y_TomcathttpsgithubcomManuelMenaPanaceatreemasterTomcatMavenSNOMEDCT_1"></a><a href="https://github.com/ManuelMena/Panacea/tree/master/TomcatMavenSNOMED-CT">Crear un servidor de Snomed-CT® con Google Cloud y Tomcat®</a></h1>
+<hr>
+<h2><a id="Crear_instancia_de_VM_con_Tomcat_3"></a>Crear instancia de VM con Tomcat®</h2>
+<h3><a href="https://console.cloud.google.com/launcher/details/click-to-deploy-images/tomcat">https://console.cloud.google.com/launcher/details/click-to-deploy-images/tomcat</a></h3>
+<div class="pitagoras col-lg-12">
+<h2><a id="Instalar_requerimientos_en_el_SSH_5"></a>Instalar requerimientos en el SSH</h2>
+<h3><a id="Instalar_maven_6"></a>Instalar maven</h3>
+<pre><code class="language-debian" style="color: white">$ sudo apt-get install maven
+</code></pre>
+<h3><a id="Instalar_Servidor_de_MySQL_56_10"></a>Instalar Servidor de MySQL 5.6</h3>
+<pre><code class="language-linux" style="color: white">$ sudo apt-get install mysql-server
+$ sudo su 
+$ echo &quot;CREATE database snomeddb CHARACTER SET utf8 default collate utf8_bin;&quot; | mysql
+</code></pre>
+<h1><a id="SETUP_snomed_16"></a>SETUP snomed</h1>
+<pre><code class="language-linux" style="color: white">$ mkdir ~/snomed
+</code></pre>
+<h2><a id="Crear_directorio_data_20"></a>Crear directorio data</h2>
+<pre><code class="language-linux" style="color: white">$ mkdir ~/snomed
+$ cd ~/snomed
+$ mkdir config data
+$ git clone https://github.com/WestCoastInformatics/UMLS-Terminology-Server.git code
+</code></pre>
+<h2><a id="Crear_directorio_code_27"></a>Crear directorio code</h2>
+<pre><code class="language-linux" style="color: white">$ cd ~/snomed/code
+$ git pull
+$ mvn -Dconfig.artifactId=term-server-config-prod-snomedct clean install
+</code></pre>
+<h2><a id="Descomprimir_datos_de_muestra_33"></a>Descomprimir datos de muestra</h2>
+<pre><code class="language-linux" style="color: white">$ cd ~/snomed/code
+$ unzip ~/snomed/code/config/target/term*.zip -d ~/snomed/data
+</code></pre>
+<h2><a id="Descomprimir_configuracin_y_scripts_38"></a>Descomprimir configuración y scripts</h2>
+<pre><code class="language-linux" style="color: white">$ cd ~/snomed
+$ unzip ~/snomed/code/config/prod-snomedct/target/term*.zip -d config
+$ ln -s config/bin
+</code></pre>
+<h2><a id="Revisar_QA_despues_de_cargar_44"></a>Revisar QA despues de cargar</h2>
+<pre><code class="language-linux" style="color: white">$ cd ~/snomed/code/admin/qa
+$ mvn install -PDatabase -Drun.config.snomed=/home/ec2-tomcat/config/config.properties
+</code></pre>
+<h3><a id="editar_JAVA_OPTS_49"></a>editar <code>JAVA_OPTS</code></h3>
+<pre><code class="language-debian" style="color: white">$ cd $CATALINA_HOME/etc/tomcat8 &amp;&amp; sudo nano tomcat8.conf
+</code></pre>
+<h4><a id="cambiar_Plugin_javaPlugin_53"></a>cambiar &lt;Plugin java&gt;&lt;/Plugin&gt;</h4>
+<pre><code class="language-config">&lt;Plugin java&gt;
+  JAVA_OPTS &quot;-Drun.config.snomed=/home/ec2-tomcat/snomed/config/config.properties file&quot;
+&lt;/Plugin&gt;
+</code></pre>
+<h2><a id="Recargar_Datos_59"></a>Recargar Datos</h2>
+<h3><a id="Desanudar_e_iniciar_la_pgina_de_mantenimiento_60"></a>Desanudar e iniciar la página de mantenimiento</h3>
+<pre><code class="language-linux" style="color: white">$ /bin/rm -rf /var/lib/tomcat8/work/Catalina/localhost/snomed-server-rest
+$ /bin/rm -rf /var/lib/tomcat8/webapps/snomed-server-rest
+$ /bin/rm -rf /var/lib/tomcat8/webapps/snomed-server-rest.war
+$ /opt/maint/getMaintHtml.sh start snomed
+</code></pre>
+<h2><a id="Desplegar_Datos_67"></a>Desplegar Datos</h2>
+<pre><code class="language-linux" style="color: white">$ cd ~/snomed/data
+$ wget https://wci1.s3.amazonaws.com/TermServer/snomed.sql.gz
+$ mysqls &lt; ~/snomed/code/admin/mojo/src/main/resources/truncate_all.sql
+$ gunzip -c snomed.sql.gz | mysqls &amp;
+$ wait
+$ mysqls &lt; ~/fixWindowsExportData.sql
+$ /bin/rm ~/snomed/data/snomed.sql.gz
+</code></pre>
+<h2><a id="Recomputar_indexes_77"></a>Recomputar indexes</h2>
+<pre><code class="language-linux" style="color: white">$ /bin/rm -rf /var/lib/tomcat8/indexes/snomedct/*
+$ cd ~/snomed/code/admin/lucene
+$ mvn install -PReindex  -Drun.config.umls=/home/ec2-tomcat/snomed/config/config.properties &gt;&amp;! mvn.log &amp;
+</code></pre>
+<h2><a id="Desplegar_y_remover_pagina_de_mantenimiento_83"></a>Desplegar y remover pagina de mantenimiento</h2>
+<pre><code class="language-linux" style="color: white">$ /bin/cp -f ~/snomed/code/rest/target/umls-server-rest*war /var/lib/collectd/webapps/snomed-server-rest.war
+$ /opt/maint/getMaintHtml.sh stop snomed
+</code></pre>
+<h3><a id="Recuerde_eliminar_snomedsql_cuando_haya_terminado_ocupa_mucho_espacio_88"></a>Recuerde eliminar snomed.sql cuando haya terminado (ocupa mucho espacio)</h3>
+<h3><a id="INSTRUCCIONES_DE_REEMPLEO_89"></a>INSTRUCCIONES DE REEMPLEO</h3>
+<pre><code class="language-linux" style="color: white">$ cd ~/snomed/code
+$ git pull
+$ mvn -Drun.config.label=ts -Dconfig.artifactId=term-server-config-prod-snomedct clean install
+</code></pre>
+<pre><code class="language-linux" style="color: white">$ /bin/rm -rf /var/lib/tomcat8/work/Catalina/localhost/snomed-server-rest
+$ /bin/rm -rf /var/lib/tomcat8/webapps/snomed-server-rest
+$ /bin/rm -rf /var/lib/tomcat8/webapps/snomed-server-rest.war
+$ /bin/cp -f ~/snomed/code/rest/target/umls-server-rest*war /var/lib/tomcat8/webapps/snomed-server-rest.war
+</code></pre>
+</div>

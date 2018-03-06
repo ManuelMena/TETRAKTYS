@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="es">
+<!--#####################################################################################################################################################################################################################        head-->
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+      <title>Panacea | Historia Clínica</title>
+      <meta name="description" content="Historia Clínica electrónica">
+      <link rel="manifest" href="/manifest.json">
+      <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+      <script src="/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+      <link rel="import" href="/bower_components/app-layout/app-layout.html">
+      <link rel="import" href="/bower_components/app-layout/app-header/app-header.html">
+      <link rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html">
+      <link rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html">
+      <link rel="import" href="/bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+      <link rel="import" href="/bower_components/app-layout/iron-flex-layout/iron-flex-layout.html">
+      <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+      <link rel="import" href="/bower_components/paper-button/paper-button.html">
+      <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+      <link rel="import" href="/bower_components/iron-collapse-button/iron-collapse-button.html">
+      <link rel="import" href="/bower_components/iron-collapse/iron-collapse.html">
+
+ <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++           bootstrap-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++         01-03-2018-->
+    </head>
+<!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$       fin head --> 
+
+  <style type="text/css">
+
+   html, body {
+      margin: 0;
+      font-family: 'Roboto', 'Noto', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #f1f1f1;
+      max-height: 600px;
+    }
+    app-header {
+      @apply --layout-fixed-top;
+      color: #fff;
+      --app-header-background-rear-layer: {
+        background-color: #ef6c00;
+        height: 72px;
+        margin-bottom: 10px;
+        margin-top: 0px;
+      };
+    }
+    app-header-layout {
+      height: 550px;
+      max-height: 580px;
+    }
+    app-toolbar {
+      background-color: #4285F4;
+      color: #fff;
+      margin-top: 10px;
+      height: 70px;
+    }
+    app-drawer {
+      --app-drawer-scrim-background: rgba(0, 0, 100, 0.8);
+      --app-drawer-content-container: {
+        background-color: #B0BEC5;
+        padding: 10px 10px 10px 10px;
+      }
+    }
+    paper-icon-button {
+      --paper-icon-button-ink-color: white;
+    }
+
+    paper-icon-button + [main-title] {
+      margin-left: 24px;
+    }
+    paper-button.drawer {
+      margin-left: 50px;
+      margin-top: 100px;
+    }   
+    button.publications {
+      margin-left: 30px;
+      margin-top: 36px; 
+      background-color: #34A853;
+    }
+    button.dillinger {
+      margin-left: 30px;
+      margin-top: 36px;
+      background-color: #EA4335;
+    } 
+    div.indexpub {
+      max-height: 80px;
+      overflow: auto;
+      margin-bottom: 10px;
+    }
+      div.support {
+      height: 500px;
+      margin-left: 0px;
+      margin-top: 6px;
+      color: gray;
+      text-align: center;
+    }
+    div.statepub {
+      height: 160px;
+      margin-left: 46px;
+      background-color: #CCD6DD;
+    }
+    div.statecomp {
+      height: 130px;
+      margin-left: 46px;
+      background-color:  #F7F7F7;
+    }
+    div.listcomp {
+      height: 435px;
+      max-height: 460px;
+      overflow: auto;
+      margin-top: 10px;
+    }
+    a.recursos {
+      margin-top: 60px;
+      margin-left: 20px;
+    }
+        polymer-pub-app {
+      height: 460px;
+      overflow: auto;
+      padding:  40px 40px 40px 40px;
+      text-align: justify;
+    }
+    header-counter-skip {
+      height: 300px;
+      overflow: auto;
+      padding:  40px 40px 40px 40px;
+      text-align: justify;
+    }
+    introduction-section {
+      height: 300px;
+      overflow: auto;
+      padding:  40px 40px 40px 40px;
+      text-align: justify;
+    }
+    abstract-counter-skip {
+      height: 300px;
+      overflow: auto;
+      padding:  40px 40px 40px 40px;
+      text-align: justify;
+    }
+    body-paper {
+      height: 300px;
+      overflow: auto;
+      padding:  40px 40px 40px 40px;
+      text-align: justify;
+    }
+    references-set {
+      height: 290px;
+      overflow: auto;
+      padding:  40px 40px 40px 40px;
+      text-align: justify;
+    }  
+  </style>
+  <body class="col col-lg-12 col-outo">
+
+
+
+    <!--#####################################################################################################################################################################################################################        app-header-->
+         <app-header-layout >
+          <app-header>
+           <app-toolbar>
+            <paper-icon-button icon="menu" onclick="drawer.toggle()"></paper-icon-button>
+            <div main-title><iron-icon icon="polymer"></iron-icon> Panacea</div>
+           </app-toolbar>
+          </app-header>
+         </app-header-layout>
+    <!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$       fin app-header --> 
+
+
+    <!--#####################################################################################################################################################################################################################        app-drawer-->
+      <app-drawer id="drawer" swipe-open>
+
+        <img src="http://www.tetraktys.info/wp-content/uploads/2018/02/panacealogo-1-800x226.png" width="94%" alt="Panacea">
+
+        <paper-button toggles raised active class="drawer" id="button" data-toggle="collapse" data-target="#sub" aria-expanded="true" aria-controls="sub"><iron-icon icon="assignment-ind"></iron-icon>Subjetivo</paper-button> 
+
+        <paper-button toggles raised active class="drawer" id="button" data-toggle="collapse" data-target="#obj" aria-expanded="true" aria-controls="obj"><iron-icon icon="search"></iron-icon>Objetivo</paper-button>
+
+        <paper-button toggles raised active class="drawer" id="button" data-toggle="collapse" data-target="#ana" aria-expanded="true" aria-controls="ana"><iron-icon icon="lightbulb-outline"></iron-icon>Análisis</paper-button>
+
+      </app-drawer>
+    <!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$       fin app-drawer --> 
+
+    <!--#####################################################################################################################################################################################################################        landing page-->
+
+   <!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$       fin landing page --> 
+
+    <!--#####################################################################################################################################################################################################################        subjetivo -->
+       <div class="col-lg-9 collapse" id="sub" style="position: absolute; right: 10px; top: 76px; padding: 10px 10px 10px 10px;">
+
+         <div class="indexpub col-lg-12">
+          <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#indexcomp" aria-expanded="false" aria-controls="indexcomp">
+            <paper-icon-button icon="polymer"></paper-icon-button>
+              Desarrollo de registros médicos: la historia clínica y su aventura semiológica
+          </button>
+         </div>
+
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#header" aria-expanded="false" aria-controls="header"
+          style="margin-left: 16px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Encabezado</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#introduction" aria-expanded="false" aria-controls="introduction" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Introducción</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#abstract" aria-expanded="false" aria-controls="abstract" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Resumen</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#body" aria-expanded="false" aria-controls="body" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Cuerpo</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#references" aria-expanded="false" aria-controls="references" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Referencias</span>
+          </button> 
+
+          <div class="listcomp collapse col-lg-12" id="indexcomp">
+            <div class="card card-body bg-light col-lg-12">
+
+              <div class="container">
+                <h4>Desarrollo de registros médicos: la historia clínica y su aventura semiológica</h4>
+
+             <div class="collapse col-lg-12" id="header" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <header-counter-skip class="card border-primary col-lg-7"></header-counter-skip>
+
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Encabezado</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 100%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">100%</strong>
+                  </div>
+                 </div>
+                </div>
+
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="introduction" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <introduction-section class="card border-primary col-lg-7" style="overflow: auto;"></introduction-section>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Introducción</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 92%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">92%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="abstract" style="overflow: auto;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <abstract-counter-skip class="card border-primary col-lg-7" style="overflow: auto;"></abstract-counter-skip>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Resumen</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 1%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">0%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="body" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <body-paper class="card border-primary col-lg-7"></body-paper>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Cuerpo</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 60%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">60%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="references" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <references-set class="card border-primary col-lg-7"></references-set>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Referencias</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 40%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">40%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>         
+
+           </div>
+          </div>
+         </div>
+
+        </div>
+
+
+       <div class="col-lg-9 collapse" id="obj" style="position: absolute; right: 10px; top: 76px; padding: 10px 10px 10px 10px;">
+
+         <div class="indexpub col-lg-12">
+          <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#indexcomp" aria-expanded="false" aria-controls="indexcomp">
+            <paper-icon-button icon="polymer"></paper-icon-button>
+              Desarrollo de registros médicos: la historia clínica y su aventura semiológica
+          </button>
+         </div>
+
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#header" aria-expanded="false" aria-controls="header"
+          style="margin-left: 16px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Encabezado</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#introduction" aria-expanded="false" aria-controls="introduction" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Introducción</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#abstract" aria-expanded="false" aria-controls="abstract" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Resumen</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#body" aria-expanded="false" aria-controls="body" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Cuerpo</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#references" aria-expanded="false" aria-controls="references" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Referencias</span>
+          </button> 
+
+          <div class="listcomp collapse col-lg-12" id="indexcomp">
+            <div class="card card-body bg-light col-lg-12">
+
+              <div class="container">
+                <h4>Desarrollo de registros médicos: la historia clínica y su aventura semiológica</h4>
+
+             <div class="collapse col-lg-12" id="header" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <header-counter-skip class="card border-primary col-lg-7"></header-counter-skip>
+
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Encabezado</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 100%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">100%</strong>
+                  </div>
+                 </div>
+                </div>
+
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="introduction" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <introduction-section class="card border-primary col-lg-7" style="overflow: auto;"></introduction-section>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Introducción</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 92%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">92%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="abstract" style="overflow: auto;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <abstract-counter-skip class="card border-primary col-lg-7" style="overflow: auto;"></abstract-counter-skip>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Resumen</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 1%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">0%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="body" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <body-paper class="card border-primary col-lg-7"></body-paper>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Cuerpo</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 60%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">60%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="references" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <references-set class="card border-primary col-lg-7"></references-set>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Referencias</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 40%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">40%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>         
+
+           </div>
+          </div>
+         </div>
+
+        </div>
+        
+
+        <div class="col-lg-9 collapse" id="ana" style="position: absolute; right: 10px; top: 76px; padding: 10px 10px 10px 10px;">
+
+         <div class="indexpub col-lg-12">
+          <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#indexcomp" aria-expanded="false" aria-controls="indexcomp">
+            <paper-icon-button icon="polymer"></paper-icon-button>
+              Desarrollo de registros médicos: la historia clínica y su aventura semiológica
+          </button>
+         </div>
+
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#header" aria-expanded="false" aria-controls="header"
+          style="margin-left: 16px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Encabezado</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#introduction" aria-expanded="false" aria-controls="introduction" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Introducción</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#abstract" aria-expanded="false" aria-controls="abstract" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Resumen</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#body" aria-expanded="false" aria-controls="body" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Cuerpo</span>
+          </button>
+          <button class="col-auto btn btn-success" type="button" data-toggle="collapse" data-target="#references" aria-expanded="false" aria-controls="references" style="margin-left: 6px;">
+            <paper-icon-button icon="label"></paper-icon-button><span>Referencias</span>
+          </button> 
+
+          <div class="listcomp collapse col-lg-12" id="indexcomp">
+            <div class="card card-body bg-light col-lg-12">
+
+              <div class="container">
+                <h4>Desarrollo de registros médicos: la historia clínica y su aventura semiológica</h4>
+
+             <div class="collapse col-lg-12" id="header" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <header-counter-skip class="card border-primary col-lg-7"></header-counter-skip>
+
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Encabezado</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 100%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">100%</strong>
+                  </div>
+                 </div>
+                </div>
+
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="introduction" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <introduction-section class="card border-primary col-lg-7" style="overflow: auto;"></introduction-section>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Introducción</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 92%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">92%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="abstract" style="overflow: auto;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <abstract-counter-skip class="card border-primary col-lg-7" style="overflow: auto;"></abstract-counter-skip>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Resumen</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 1%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">0%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="body" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <body-paper class="card border-primary col-lg-7"></body-paper>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Cuerpo</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 60%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">60%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>
+
+             <div class="collapse col-lg-12" id="references" style="margin-top: 20px;">
+              <div class="card card-body bg-light col-lg-12">
+               <div class="row">
+                <references-set class="card border-primary col-lg-7"></references-set>
+                 <div class="statecomp card border-secondary col-lg-4">
+                  <strong style="font-size: 20px; text-align: center;">Referencias</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 40%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">40%</strong>
+                  </div>
+                 </div>
+                </div>
+               </div>
+              </div>
+             </div>         
+
+           </div>
+          </div>
+         </div>
+
+        </div>
+
+    <!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$       collapse fin componetes lista articulos -->
+
+    <!--#####################################################################################################################################################################################################################        collapse lista publicaciones -->
+         <div class="col-lg-9 collapse" id="publicaciones" style="position: absolute; right: 10px; top: 76px; padding: 10px 10px 10px 10px;">
+          <div class="indexpub col-lg-12">
+            <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#index" aria-expanded="false" aria-controls="index" style="background-color: #34A853;">
+             <paper-icon-button icon="book"></paper-icon-button>Desarrollo de registros médicos: la historia clínica y su aventura semiológica
+            </button>
+           </div>
+           <div class="collapse col-lg-12" id="index">
+            <div class="card card-body bg-light col-lg-12">
+              <div class="container">
+              <div class="row">
+              <polymer-pub-app class="card border-primary col-lg-7"></polymer-pub-app>
+              <div class="statepub card border-secondary col-lg-4">
+                <strong style="font-size: 20px; text-align: center;">Estado General</strong>
+                  <div class="progress" style="height: 66px; margin-top: 10px;">
+                   <div class="progress-bar" role="progressbar" style="width: 40%; background-color: #87bdd8; border-color: green; border-width: 5px;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+                    <span class="fa fa-check-square-o" style="font-size: 26px; color: #34A853;"></span><strong style="color: #34A853; font-size: 16px;">40%</strong>
+                  </div>             
+                 </div>
+
+
+                  <div class="row" style="text-align: center;">
+                  <a href="https://storage.googleapis.com/panaceaapp/polymer-pub.pdf" target="_blank"><i class="fa fa-file-pdf-o" style="font-size: 30px; margin: 20px 20px 20px 20px;"></i></a>
+                  <a href="http://35.202.115.52/polymer-pub.html" target="_blank"><i class="fa fa-eye" style="font-size: 30px; margin: 20px 20px 20px 20px;"></i></a>
+                  </div>
+              
+                </div>
+              </div>
+              </div>
+            </div>
+           </div>
+          </div>
+    <!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$       collapse fin lista publicaciones -->
+
+    <!--#####################################################################################################################################################################################################################        collapse Dillinger Iframe -->
+         <div class="col-lg-9 collapse" id="dillinger" style="position: absolute; right: 10px; top: 73px; padding: 10px 10px 10px 10px;">
+          <div class="card card-body bg-light col-lg-12">
+           <paper-icon-button icon="code"></paper-icon-button>
+            <div class="container">
+             <iframe height="470px" width="100%" src="https://dillinger.io/"></iframe>
+            </div>
+           </div>
+         </div>
+    <!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$       collapse Dillinger Iframe -->
+  </body>
+
+</html>

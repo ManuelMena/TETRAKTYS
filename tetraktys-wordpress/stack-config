@@ -1,0 +1,306 @@
+#!/usr/bin/env python
+"""
+Simple way to make it easier to configure the Stackdriver services on
+a single server.
+"""
+
+try:
+    import json
+except ImportError:
+    import simplejson as json
+import optparse
+import os
+import subprocess
+import sys
+import time
+import urllib2
+import uuid
+
+PYTHON_MAJOR, PYTHON_MINOR = sys.version_info[:2]
+
+METADATA_BASE_URL = "http://169.254.169.254/"
+
+
+def urlopen_with_timeout(url, data=None, timeout=3):
+    """Invoke urllib2.urlopen() with a timeout, if possible."""
+    if PYTHON_MAJOR == 2 and PYTHON_MINOR < 6:
+        return urllib2.urlopen(url, data)
+    else:
+        return urllib2.urlopen(url, data, timeout)
+
+
+def fetch_url_content(url):
+    """Return the content for a URL or Request object.
+
+    Returns None on any error.
+    """
+    try:
+        fp = urlopen_with_timeout(url)
+        try:
+            return fp.read()
+        finally:
+            fp.close()
+    except Exception:
+        return None
+
+
+def is_gce():
+    """Determine whether this is a GCE instance."""
+    try:
+        response = urlopen_with_timeout(METADATA_BASE_URL)
+        try:
+            return response.info().get("Metadata-Flavor") == "Google"
+        finally:
+            response.close()
+    except Exception:
+        return False
+
+
+def get_gce_metadata(path):
+    """Query a GCE metadata value, returning None if it is not defined.
+
+    The path should be of the form "instance/..." or "project/...".
+    """
+    if not is_gce():
+        return None
+
+    request = urllib2.Request(METADATA_BASE_URL + "computeMetadata/v1/" + path)
+    request.add_header("Metadata-Flavor", "Google")
+    return fetch_url_content(request)
+
+
+def _has_hostid():
+    """Quick check for if this is a virtualized instance type or hostid already set
+
+    Note that this has to be kept in sync with the initscript.
+    """
+    if os.path.exists("/opt/stackdriver/hostid"):
+        hostid = open("/opt/stackdriver/hostid", "r").read()
+        if hostid:
+            return hostid.strip()
+    if os.path.exists("/usr/bin/xenstore-read"):
+        xen_provider = subprocess.Popen(["/usr/bin/xenstore-read", "vm-data/provider_data/provider"]).communicate()[0]
+        if xen_provider == "Rackspace":
+            hostid = subprocess.Popen(["/usr/bin/xenstore-read", "name"]).communicate()[0].replace("instance-", "")
+            if hostid:
+                return hostid.strip()
+    hostid = fetch_url_content(METADATA_BASE_URL + "latest/meta-data/instance-id")
+    if hostid:
+        return hostid.strip()
+    hostid = fetch_url_content(METADATA_BASE_URL + "0.1/meta-data/instance-id")
+    if hostid:
+        return hostid.strip()
+    if os.path.exists("/sys/hypervisor/uuid"):
+        hostid = open("/sys/hypervisor/uuid", "r").read()
+        if hostid:
+            return hostid.strip()
+    return None
+
+
+def get_stackconfig_fn():
+    if os.path.exists("/etc/sysconfig/stackdriver"):
+        fn = "/etc/sysconfig/stackdriver"
+    elif os.path.exists("/etc/default/stackdriver-agent"):
+        fn = "/etc/default/stackdriver-agent"
+    else:
+        raise RuntimeError("Can't find file to write api key!")
+    return fn
+
+def write_use_v3():
+    fn = get_stackconfig_fn()
+
+    f = open(fn, "r")
+    lines = f.readlines()
+    f.close()
+    f = open(fn, "w")
+    for l in lines:
+        f.write(l)
+    f.write('DETECT_GCM="yes"\n')
+    f.close()
+
+def toggle_extractor(state):
+    if state == "off":
+        rc_state = "disable"
+    else:
+        rc_state = "enable"
+    if os.path.exists("/usr/sbin/update-rc.d"):
+        subprocess.call(["/usr/sbin/update-rc.d", "stackdriver-extractor", rc_state])
+    elif os.path.exists("/usr/sbin/chkconfig"):
+        subprocess.call(["/usr/sbin/chkconfig", "stackdriver-extractor", state])
+    elif os.path.exists("/sbin/chkconfig"):
+        subprocess.call(["/sbin/chkconfig", "stackdriver-extractor", state])
+
+def disable_extractor():
+    toggle_extractor("off")
+
+def enable_extractor():
+    toggle_extractor("on")
+
+def write_apikey(apikey):
+    fn = get_stackconfig_fn()
+
+    f = open(fn, "r")
+    lines = f.readlines()
+    f.close()
+    f = open(fn, "w")
+    for l in lines:
+        if l.startswith("STACKDRIVER_API_KEY="):
+            l = "STACKDRIVER_API_KEY=%s\n" % apikey
+        f.write(l)
+    f.close()
+
+
+def write_hostid():
+    f = open("/opt/stackdriver/hostid", "w")
+    f.write(str(uuid.uuid4()))
+    f.close()
+
+
+def restart_services(use_v3=False):
+    subprocess.call(["/etc/init.d/stackdriver-agent", "restart"])
+    if not use_v3:
+        subprocess.call(["/etc/init.d/stackdriver-extractor", "restart"])
+
+
+def get_config_key(config_key):
+    fn = get_stackconfig_fn()
+    f = open(fn, "r")
+    lines = f.readlines()
+    f.close()
+    for l in lines:
+        if l.strip().startswith("%s=" % config_key):
+            key = l.replace("%s=" % config_key, "")
+            key = key.replace("'", "")
+            key = key.replace('"', "")
+            key = key.strip()
+            return key
+    return ""
+
+def get_use_v3():
+    return get_config_key("DETECT_GCM").lower() in ("yes", "1")
+
+def get_apikey():
+    return get_config_key("STACKDRIVER_API_KEY")
+
+def get_proxy_url():
+    return get_config_key("PROXY_URL")
+
+def gateway_info(apikey, proxy):
+    sys.path.insert(0, '/opt/stackdriver/extractor/bin')
+    import hostutil
+    url = "https://gateway.stackdriver.com/v1/agent-test?stackdriver-apikey=%s" % apikey
+    (scheme, netloc, path, query, fragment) = hostutil.urlsplit(url)
+
+    if proxy:
+        proxy_netloc = hostutil.urlsplit(proxy)[1]
+        conn = hostutil.get_https_connection()(*proxy_netloc.split(":"))
+        # TODO(apm): Merge this with sender.py
+        if hasattr(conn, "set_tunnel"):  # Python 2.7+
+            conn.set_tunnel('gateway.stackdriver.com', 443)
+        elif hasattr(conn, "_set_tunnel"): # Python 2.6.6 (private)
+            conn._set_tunnel('gateway.stackdriver.com', 443)
+    else:
+        conn = hostutil.get_https_connection()("gateway.stackdriver.com")
+
+    path = "%s?%s" % (path, query)
+    conn.request('GET', path)
+    fp = conn.getresponse()
+    gw_info = fp.read()
+    conn.close()
+    return json.loads(gw_info)
+
+
+def info():
+    print "Stackdriver Host Info Dump"
+
+    hostid = _has_hostid()
+    print "Resource Id: %s" % hostid
+
+    apikey = get_apikey()
+    print "API Key: %s" % apikey or "NOT SET"
+
+    proxy = get_proxy_url()
+    if proxy:
+        print "Proxy: %s" % proxy
+
+    gwdata = {}
+    if apikey:
+        try:
+            gwdata = gateway_info(apikey, proxy)
+        except Exception, ex:
+            print "Error talking to Stackdriver gateway", ex
+    if gwdata:
+        print "Customer ID: %s" % gwdata.get('customer_id', 'unknown')
+        print "Time offset: %s seconds" % (time.time() - gwdata.get('timestamp'),)
+
+    print "Agent status: ",
+    subprocess.call(["/etc/init.d/stackdriver-agent", "status"])
+    print "Agent config snippets: ",
+    print ",".join(os.listdir("/opt/stackdriver/collectd/etc/collectd.d"))
+    print "Extractor status: ",
+    subprocess.call(["/etc/init.d/stackdriver-extractor", "status"])
+
+    if os.path.exists("/opt/stackdriver/extractor/etc/extractor.conf"):
+        print "Extractor sample data: "
+        subprocess.call(["/opt/stackdriver/extractor/bin/extractd.py", "-c", "/opt/stackdriver/extractor/etc/extractor.conf", "dump"])
+
+
+def main():
+    parser = optparse.OptionParser(description="Stackdriver service configuration")
+    parser.add_option("--api-key", help="Stackdriver API key to use")
+    parser.add_option("--write-gcm", help="Write to Google Cloud Monitoring API", action="store_true")
+    parser.add_option("--host-id", help="Host id to use")
+    parser.add_option("--genhostid", help="Generate a host id for a (non-virtual) instance", action="store_true")
+    parser.add_option("--force-hostid", help="Force generation of a host id even on something that appears to be virtualized", action="store_true")
+    parser.add_option("--no-start", help="Don't (try to) start services", action="store_true")
+    parser.add_option("--restart", help="Restart the services", action="store_true")
+
+    (options, args) = parser.parse_args()
+
+    if len(args) == 1 and args[0] == 'info':
+        info()
+        sys.exit(0)
+
+    use_v3 = get_use_v3()
+
+    if options.restart:
+        restart_services(use_v3)
+        sys.exit(0)
+
+    if not options.write_gcm and not options.api_key and not get_gce_metadata("project/attributes/stackdriver-agent-key"):
+        print >> sys.stderr, "Need to provide api key"
+        sys.exit(1)
+
+    print("Checking platform...")
+    has_hostid = _has_hostid()
+    if has_hostid and options.genhostid:
+        print >> sys.stderr, "Asked to generate a host id but there already seems to be one for this host!"
+        sys.exit(1)
+    if not (options.genhostid or options.force_hostid) and not has_hostid:
+        print >> sys.stderr, "Unable to auto-determine hostid.  Would you like to generate one? (Y/n)?"
+        inp = raw_input()
+        if inp.strip().lower() == 'y':
+            options.genhostid = True
+        else:
+            print >> sys.stderr, "Didn't ask to generate a host id and this doesn't seem to be a hosted instance!"
+            sys.exit(1)
+
+    if options.api_key:
+        print "Writing out API key"
+        write_apikey(options.api_key)
+        enable_extractor()
+    if options.write_gcm:
+        print "Using Cloud Monitoring API"
+        write_use_v3()
+        disable_extractor()
+        use_v3 = True
+    if (options.genhostid and not has_hostid) or options.force_hostid:
+        print "Generating host id"
+        write_hostid()
+    if not options.no_start:
+        print "Restarting services"
+        restart_services(use_v3)
+
+
+if __name__ == "__main__":
+    main()

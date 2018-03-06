@@ -1,0 +1,108 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<style type="text/css">
+	.pitagoras {
+	  font-size: 12px;
+	  max-height: 300px;
+	  overflow: auto;
+	}
+	div.creativespace {
+		height: 100px;
+	}
+	.card {
+	}
+	div.ejemplos {
+		text-align: left;
+	}
+</style>
+
+<div class="pitagoras col-lg-12">
+<hr>
+<h1><a id="Instalar_Polymer_con_Django_en_Google_CloudhttpsgithubcomManuelMenaPanaceatreemasterDJangoPolymer_1"></a><a href="https://github.com/ManuelMena/Panacea/tree/master/DJangoPolymer">Instalar Polymer con Django en Google Cloud</a></h1>
+<hr>
+<h2><a id="Crear_una_instancia_de_Linux_con_el_stack_django_en_bitnami_con_Google_Cloud_3"></a>Crear una instancia de Linux con el stack django en bitnami con Google Cloud</h2>
+<h2><a href="https://bitnami.com/stack/django">https://bitnami.com/stack/django</a><br>
+ingresar a la terminal y abrir un SSH</h2>
+</div>
+
+<div class="pitagoras col-lg-6">
+<h2><a id="Intalar_nodejs_6"></a>Intalar nodejs</h2>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -
+$ sudo apt-get install -y nodejs
+</code></pre>
+<h3><a id="Para_compilar_e_instalar_extensiones_nativas_11"></a>Para compilar e instalar extensiones nativas</h3>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ sudo apt-get install -y build-essential
+</code></pre>
+<h2><a id="Instalar_global_de_npm_15"></a>Instalar global de npm</h2>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ mkdir ~/.npm-global
+$ npm config set prefix '~/.npm-global'
+$ sudo nano ~/.profile
+</code></pre>
+<h3><a id="Pegar_21"></a>Pegar</h3>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ export PATH=~/.npm-global/bin:$PATH
+</code></pre>
+<h3><a id="Guardar_y_volver_a_actualizar_con_el_comando_25"></a>Guardar y volver a actualizar con el comando</h3>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ source ~/.profile
+</code></pre>
+<h3><a id="probar_29"></a>probar</h3>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ npm install -g jshint
+</code></pre>
+<h2><a id="Instalar_y_comprobar_requisitos_33"></a>Instalar y comprobar requisitos</h2>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ node --version
+$ npm install npm@latest -g
+$ git --version
+$ npm install -g bower
+</code></pre>
+<h2><a id="Instalar_polymer_CLI_40"></a>Instalar polymer CLI</h2>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ npm install -g polymer-cli
+</code></pre>
+<h2><a id="Actualizar_permisos_44"></a>Actualizar permisos</h2>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ sudo chmod 777 htdocs
+$ cd htdocs &amp;&amp; sudo chmod 777 index.html
+</code></pre>
+<h2><a id="Instalar_proyecto_49"></a>Instalar proyecto</h2>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ cd &amp;&amp; cd htdocs &amp;&amp; polymer init
+$ ❯ polymer-2-application - A simple Polymer 2.0 application
+$ polymer serve
+</code></pre>
+<h5><a id="cerrar_SSH_55"></a>cerrar SSH.</h5>
+<h2><a id="Actualizar_permisos_56"></a>Actualizar permisos</h2>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ cd htdocs &amp;&amp; sudo chmod 777 bower.json &amp;&amp; sudo chmod 777 manifest.json &amp;&amp; sudo chmod 777 polymer.json
+</code></pre>
+
+<h2><a id="Instalar_layout_y_componentes_en_htdocs_60"></a>Instalar layout y componentes en htdocs.</h2>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ cd &amp;&amp; cd htdocs
+$ bower install PolymerElements/app-layout --save &amp;&amp; bower install PolymerElements/iron-icons --save 
+$ bower install PolymerElements/paper-icon-button --save &amp;&amp; $ bower install PolymerElements/iron-page-scroll --save
+$ bower install PolymerElements/iron-pages --save &amp;&amp; bower install PolymerElements/paper-button --save 
+$ $ bower install PolymerElements/iron-demo-helpers --save  &amp;&amp; bower install PolymerElements/paper-styles --save
+$ bower install PolymerElements/iron-selector --save &amp;&amp; bower install PolymerElements/paper-listbox --save 
+$ bower install PolymerElements/iron-ajax --save &amp;&amp; bower install PolymerElements/iron-flex-layout --save
+$ bower install PolymerElements/iron-form --save &amp;&amp; bower install PolymerElements/paper-styles --save
+$ bower install PolymerElements/iron-meta --save &amp;&amp; bower install PolymerElements/app-route --save 
+
+
+</code></pre>
+<h2><a id="crear_elementos_71"></a>crear elementos</h2>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ cd &amp;&amp; cd htdocs &amp;&amp; mkdir sub-dash &amp;&amp; cd sub-dash &amp;&amp; polymer init
+$ cd &amp;&amp; cd htdocs &amp;&amp; mkdir obj-dash &amp;&amp; cd obj-dash &amp;&amp; polymer init
+$ cd &amp;&amp; cd htdocs &amp;&amp; mkdir ana-dash &amp;&amp; cd ana-dash &amp;&amp; polymer init
+$ cd &amp;&amp; cd htdocs &amp;&amp; mkdir medico-info &amp;&amp; cd medico-info &amp;&amp; polymer init
+$ cd &amp;&amp; cd htdocs &amp;&amp; mkdir config-panacea &amp;&amp; cd config-panacea &amp;&amp; polymer init
+$ cd &amp;&amp; cd htdocs &amp;&amp; mkdir paciente-info &amp;&amp; cd paciente-info &amp;&amp; polymer init
+</code></pre>
+<h2><a id="permisos_de_los_ficheros_de_los_elementos_80"></a>permisos de los ficheros de los elementos</h2>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ cd &amp;&amp; cd htdocs &amp;&amp; cd sub-dash &amp;&amp; sudo chmod 777 sub-dash.html
+$ cd &amp;&amp; cd htdocs &amp;&amp;  cd obj-dash &amp;&amp; sudo chmod 777 obj-dash.html
+$ cd &amp;&amp; cd htdocs &amp;&amp; cd ana-dash &amp;&amp; sudo chmod 777 ana-dash.html
+$ cd &amp;&amp; cd htdocs &amp;&amp; cd medico-info &amp;&amp; sudo chmod 777 medico-info.html
+$ cd &amp;&amp; cd htdocs &amp;&amp; cd config-panacea &amp;&amp; sudo chmod 777 config-panacea.html
+$ cd &amp;&amp; cd htdocs &amp;&amp; cd paciente-info &amp;&amp; sudo chmod 777 paciente-info.html
+</code></pre>
+<h2><a id="construir_89"></a>construir</h2>
+<pre style="background-color: black;"><code class="language-linux" style="color: white;">$ cd &amp;&amp; cd htdocs &amp;&amp; polymer build 
+</code></pre>
+</div>
+
+<div class="creativespace col-lg-12"></div>

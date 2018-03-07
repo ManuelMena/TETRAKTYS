@@ -1,2 +1,2 @@
 # Tetraktys
-Tetraktys is a Colombian open source initiative developed with Semantic Web technologies, implementing standards as ASTM E2210-06 (GEM-III), Snomed CT,  OpenEHR and HL7, to create web Apps and protocols for clinical decision support systems (CDSS), and to form working groups that develop recommendations, guides, application programming interfaces (API), and frameworks for interoperability.
+Tetraktys is a Colombian open source blog for developed Semantic Web technologies, implementing standards as ASTM E2210-06, Snomed CT, OpenEHR and HL7, to create clinical decision support systems (CDSS) and working groups that develop recommendations, guides, APIs and frameworks for interoperability.
